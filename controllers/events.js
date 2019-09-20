@@ -6,7 +6,7 @@ const inAscendingOrder = util.inAscendingOrder;
 var getAllEvents = (req, res) => {
 	db.find({}, function (err, doc) {
 		let result = inAscendingOrder(doc);
-		res.status(200).send(result);
+		res.status(200).json(result);
 	});
 };
 
@@ -14,11 +14,11 @@ var addEvent =  (req, res) => {
 	let { body } = req;
 	db.findOne({ id: body.id}, function(err, exist) {
 		if (exist) {
-			res.status(400).end();
+			res.status(400).json();
 			return;
 		}
-		db.insert(body, function(err, doc) {
-			res.status(201).end();
+		db.insert({...body}, function(err, doc) {
+			res.status(201).json();
 		});
 });
 };
@@ -28,13 +28,15 @@ var getByActor = (req, res) => {
 	const {params: {actorId}} = req;
 	db.find({ "actor.id" : parseInt(actorId) }, function(err, doc) {
 		doc.length ? 
-		res.status(200).send(inAscendingOrder(doc)) : res.status(404).end();
+		res.status(200).json(inAscendingOrder(doc)) : res.status(404).json();
 	})
 };
 
 
-var eraseEvents = () => {
-
+var eraseEvents = (req, res) => {
+	db.remove({}, { multi: true}, function(err, numRemoved) {
+		res.status(200).json();
+	})
 };
 
 module.exports = {
