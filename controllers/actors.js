@@ -1,11 +1,13 @@
 const db = require('../db/index');
 const util = require('../util/index');
 
-const inDescendingOrder = util.inDescendingOrder
-const inAlphabeticalOrder = util.inAlphabeticalOrder
-const getNumberOfEvents = util.orderByNumberOfEvents
-const orderByComplexity = util.orderByComplexity
-const orderByStreak = util.orderByStreak
+const inDescendingOrder = util.inDescendingOrder;
+const inAlphabeticalOrder = util.inAlphabeticalOrder;
+const getNumberOfEvents = util.orderByNumberOfEvents;
+const orderByComplexity = util.orderByComplexity;
+const orderByStreak = util.orderByStreak;
+const removeStreakAndCreatedAtFromArr = util.removeStreakAndCreatedAtFromArr;
+const removeEventNumAndCreatedAtFromArr = util.removeEventNumAndCreatedAtFromArr;
 
 var getAllActors = (req, res) => {
 	db.find({}, function (err, doc) {
@@ -19,6 +21,7 @@ var getAllActors = (req, res) => {
 		actors = getNumberOfEvents(actors);
 		actors = inDescendingOrder(actors);
 		actors = orderByComplexity(actors);
+		actors = removeEventNumAndCreatedAtFromArr(actors);
 
 		res.status(200).json(actors);
 	});
@@ -47,14 +50,15 @@ var updateActor = (req, res) => {
 
 var getStreak = (req, res) => {
 	db.find({}, function (err, doc) {
-		let actors = doc.map(event => { 
+		let actors = doc.map(event => {
 			const actorEvent = event.actor
 			const createdAt = event.created_at
 			const result = {...actorEvent, createdAt}
 			return result;
 		});
-		actors = inAlphabeticalOrder(actors);
+		// actors = inAlphabeticalOrder(actors);
 		actors = orderByStreak(actors);
+		actors = removeStreakAndCreatedAtFromArr(actors);
 
 		res.status(200).json(actors);
 	});

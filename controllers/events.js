@@ -4,7 +4,11 @@ const util = require('../util/index');
 const inAscendingOrder = util.inAscendingOrder;
 
 var getAllEvents = (req, res) => {
-	db.find({}, function (err, doc) {
+	db.find({}, {
+				_id: 0
+			},
+
+			function (err, doc) {
 		let result = inAscendingOrder(doc);
 		res.status(200).json(result);
 	});
@@ -12,12 +16,16 @@ var getAllEvents = (req, res) => {
 
 var addEvent =  (req, res) => {
 	let { body } = req;
-	db.findOne({ id: body.id}, function(err, exist) {
+	db.findOne({
+				id: body.id
+			}, 
+
+			function (err, exist) {
 		if (exist) {
 			res.status(400).json();
 			return;
 		}
-		db.insert({...body}, function(err, doc) {
+		db.insert([{...body}], function(err, doc) {
 			res.status(201).json();
 		});
 });
@@ -26,7 +34,11 @@ var addEvent =  (req, res) => {
 
 var getByActor = (req, res) => {
 	const {params: {actorId}} = req;
-	db.find({ "actor.id" : parseInt(actorId) }, function(err, doc) {
+	db.find({
+				"actor.id": parseInt(actorId)
+			}, {
+				_id: 0
+			}, function (err, doc) {
 		doc.length ? 
 		res.status(200).json(inAscendingOrder(doc)) : res.status(404).json();
 	})
