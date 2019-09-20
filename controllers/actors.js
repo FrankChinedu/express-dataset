@@ -5,6 +5,7 @@ const inDescendingOrder = util.inDescendingOrder
 const inAlphabeticalOrder = util.inAlphabeticalOrder
 const getNumberOfEvents = util.orderByNumberOfEvents
 const orderByComplexity = util.orderByComplexity
+const orderByStreak = util.orderByStreak
 
 var getAllActors = (req, res) => {
 	db.find({}, function (err, doc) {
@@ -53,9 +54,7 @@ var getStreak = (req, res) => {
 			return result;
 		});
 		actors = inAlphabeticalOrder(actors);
-		// actors = getNumberOfEvents(actors);
-		// actors = inDescendingOrder(actors);
-		// actors = orderByComplexity(actors);
+		actors = orderByStreak(actors);
 
 		res.status(200).json(actors);
 	});
