@@ -46,7 +46,7 @@ module.exports = {
       const a1time = calcTime(a.createdAt)
       const b1time = calcTime(b.createdAt)
   
-      if(a1time === a1time) {
+      if(a1time === b1time) {
         return a.login.localeCompare(b.login)
       }
       return b1time - a1time;
@@ -96,10 +96,10 @@ module.exports = {
 
    return b.streak - a.streak
  });
- for (let i = 0; i < result.length; i++) {
-   delete result[i].streak
-   delete result[i].createdAt
- }
+//  for (let i = 0; i < result.length; i++) {
+//    delete result[i].streak
+//    delete result[i].createdAt
+//  }
  return result
  },
 
