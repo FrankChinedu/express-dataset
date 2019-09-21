@@ -104,13 +104,11 @@ module.exports = {
  },
 
  removeStreakAndCreatedAtFromArr: data => {
-   const arr = [];
    let d = data;
 
    for(let i = 0; i < data.length; i++) {
     delete data[i].streak
     delete data[i].createdAt
-    // arr.push(data[i])
    }
 
    return data;
