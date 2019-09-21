@@ -63,7 +63,7 @@ module.exports = {
 
  const day = 86400000
 
- for (let i = 0; i < d.length; i++) {
+ for (let i = 0; d.length > i; i++) {
    if (d.length - 1 == i) {
      d[i].streak = count
      actorEvents.push(d[i])
@@ -78,13 +78,13 @@ module.exports = {
        count++
      }
    } else {
-     d[i].streak = count;
-     actorEvents.push(d[i]);
+     d[i].streak = count
+     actorEvents.push(d[i])
      count = 1;
    }
  }
 
- const result = actorEvents.sort((a, b) => {
+ let result = actorEvents.sort((a, b) => {
    if (a.streak === b.streak) {
      const a1time = calcTime(a.createdAt)
      const b1time = calcTime(b.createdAt)
@@ -96,6 +96,10 @@ module.exports = {
 
    return b.streak - a.streak
  });
+ for (let i = 0; i < result.length; i++) {
+   delete result[i].streak
+   delete result[i].createdAt
+ }
  return result
  },
 
@@ -106,10 +110,10 @@ module.exports = {
    for(let i = 0; i < data.length; i++) {
     delete data[i].streak
     delete data[i].createdAt
-    arr.push(data[i])
+    // arr.push(data[i])
    }
 
-   return arr;
+   return data;
  },
 
  removeEventNumAndCreatedAtFromArr: data => {

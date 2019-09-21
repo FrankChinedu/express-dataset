@@ -56,9 +56,9 @@ var getStreak = (req, res) => {
 			const result = {...actorEvent, createdAt}
 			return result;
 		});
-		// actors = inAlphabeticalOrder(actors);
+
 		actors = orderByStreak(actors);
-		actors = removeStreakAndCreatedAtFromArr(actors);
+		// actors = removeStreakAndCreatedAtFromArr(actors);
 
 		res.status(200).json(actors);
 	});
