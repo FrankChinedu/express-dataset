@@ -57,6 +57,7 @@ var getStreak = (req, res) => {
 			return result;
 		});
 
+		actors = inAlphabeticalOrder(actors)
 		actors = orderByStreak(actors);
 		actors = removeStreakAndCreatedAtFromArr(actors);
 
