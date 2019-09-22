@@ -96,10 +96,20 @@ module.exports = {
 
    return b.streak - a.streak
  });
-//  for (let i = 0; i < result.length; i++) {
-//    delete result[i].streak
-//    delete result[i].createdAt
-//  }
+ const arrInd = []
+
+ for (let i = 0; i < result.length; i++) {
+   if (result.length - 1 == i) {
+     break;
+   }
+   if (result[i].login === result[i + 1].login) {
+     arrInd.push(i)
+   }
+ }
+ for (let i = 0; i < arrInd.length; i++) {
+   result.splice(arrInd[i], 1)
+ }
+ 
  return result
  },
 
