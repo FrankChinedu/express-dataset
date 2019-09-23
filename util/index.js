@@ -80,7 +80,7 @@ module.exports = {
    return arr;
  },
 
- ByStreak:  data => {
+orderByStreak: data => {
   const d = data;
   const actorEvents = [];
   let count = 0;
@@ -115,9 +115,7 @@ module.exports = {
       } else {
         dif_in_time = dbtime - datime;
       }
-      
       dif_in_days = dif_in_time / aDayInMilsec;
-
 
       if (dif_in_days === 1) {
         const dacaltime = calcTime(d[i].createdAt);
@@ -128,6 +126,10 @@ module.exports = {
           count++
         }
       }
+      const temp1 = d[i]
+      const temp2 = d[i + 1]
+      d[i] = temp2
+      d[i + 1] = temp1
     } else {
       d[i].streak = count
       actorEvents.push(d[i])
@@ -162,5 +164,17 @@ module.exports = {
   }
 
   return result
-}
+  },
+  sortbyDate : data => {
+    const result = data.sort((a, b) => {
+      if (a.login === b.login) {
+        const a1time = calcTime(a.createdAt)
+        const b1time = calcTime(b.createdAt)
+        return b1time - a1time;
+      }
+      return a.login.localeCompare(b.login)
+    })
+
+    return result;
+  }
 }

@@ -5,9 +5,10 @@ const inDescendingOrder = util.inDescendingOrder;
 const inAlphabeticalOrder = util.inAlphabeticalOrder;
 const getNumberOfEvents = util.orderByNumberOfEvents;
 const orderByComplexity = util.orderByComplexity;
-const orderByStreak = util.ByStreak;
+const orderByStreak = util.orderByStreak;
 const removeStreakAndCreatedAtFromArr = util.removeStreakAndCreatedAtFromArr;
 const removeEventNumAndCreatedAtFromArr = util.removeEventNumAndCreatedAtFromArr;
+const sortbyDate = util.sortbyDate;
 
 var getAllActors = (req, res) => {
 	db.find({}, function (err, doc) {
@@ -57,7 +58,7 @@ var getStreak = (req, res) => {
 			return result;
 		});
 
-		actors = inAlphabeticalOrder(actors)
+		actors = sortbyDate(actors);
 		actors = orderByStreak(actors);
 		actors = removeStreakAndCreatedAtFromArr(actors);
 
