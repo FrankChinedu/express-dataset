@@ -106,9 +106,16 @@ module.exports = {
       if (parseInt(datime) > parseInt(dbtime)) {
         dif_in_time = datime - dbtime;
 
+      } else if (parseInt(dbtime) > parseInt(datime)) {
+        const temp1 = d[i]
+        const temp2 = d[i + 1]
+        d[i] = temp2
+        d[i + 1] = temp1
+        dif_in_time = dbtime - datime;
       } else {
         dif_in_time = dbtime - datime;
       }
+      
       dif_in_days = dif_in_time / aDayInMilsec;
 
 
@@ -118,10 +125,6 @@ module.exports = {
 
         const timeDiff = dacaltime + day;
         if (parseInt(timeDiff) > parseInt(dbcaltime)) {
-          const temp1 = d[i]
-          const temp2 = d[i + 1]
-          d[i] = temp2
-          d[i + 1] = temp1
           count++
         }
       }
