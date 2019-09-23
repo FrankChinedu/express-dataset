@@ -56,63 +56,6 @@ module.exports = {
   return result;
  },
 
- orderByStreak: data => {
- const d = data;
- const actorEvents = [];
- let count = 1;
-
- const day = 86400000
-
- for (let i = 0; d.length > i; i++) {
-   if (d.length - 1 == i) {
-     d[i].streak = count
-     actorEvents.push(d[i])
-     break;
-   }
-   if (d[i].login === d[i + 1].login) {
-     const datime = calcTime(d[i].createdAt);
-     const dbtime = calcTime(d[i + 1].createdAt);
-
-     const timeDiff = datime + day;
-     if (parseInt(timeDiff) > parseInt(dbtime)) {
-       count++
-     }
-   } else {
-     d[i].streak = count
-     actorEvents.push(d[i])
-     count = 1;
-   }
- }
-
- let result = actorEvents.sort((a, b) => {
-   if (a.streak === b.streak) {
-     const a1time = calcTime(a.createdAt)
-     const b1time = calcTime(b.createdAt)
-     if (a1time === b1time) {
-       return a.login.localeCompare(b.login);
-     }
-     return b1time - a1time
-   }
-
-   return b.streak - a.streak
- });
- const arrInd = []
-
- for (let i = 0; i < result.length; i++) {
-   if (result.length - 1 == i) {
-     break;
-   }
-   if (result[i].login === result[i + 1].login) {
-     arrInd.push(i)
-   }
- }
- for (let i = 0; i < arrInd.length; i++) {
-   result.splice(arrInd[i], 1)
- }
- 
- return result
- },
-
  removeStreakAndCreatedAtFromArr: data => {
    let d = data;
 
@@ -136,4 +79,85 @@ module.exports = {
 
    return arr;
  },
+
+ ByStreak:  data => {
+  const d = data;
+  const actorEvents = [];
+  let count = 0;
+
+  const aDayInMilsec = (1000 * 3600 * 24)
+  const day = 86400000
+
+  for (let i = 0; d.length > i; i++) {
+    if (d.length - 1 == i) {
+      d[i].streak = count
+      actorEvents.push(d[i])
+      break;
+    }
+    if (d[i].login === d[i + 1].login) {
+      const dafirst = d[i].createdAt.split(' ')[0];
+      const dbfirst = d[i + 1].createdAt.split(' ')[0];
+      const datime = calcTime(dafirst);
+      const dbtime = calcTime(dbfirst);
+
+
+      let dif_in_days;
+      let dif_in_time;
+      if (parseInt(datime) > parseInt(dbtime)) {
+        dif_in_time = datime - dbtime;
+
+      } else {
+        dif_in_time = dbtime - datime;
+      }
+      dif_in_days = dif_in_time / aDayInMilsec;
+
+
+      if (dif_in_days === 1) {
+        const dacaltime = calcTime(d[i].createdAt);
+        const dbcaltime = calcTime(d[i + 1].createdAt);
+
+        const timeDiff = dacaltime + day;
+        if (parseInt(timeDiff) > parseInt(dbcaltime)) {
+          const temp1 = d[i]
+          const temp2 = d[i + 1]
+          d[i] = temp2
+          d[i + 1] = temp1
+          count++
+        }
+      }
+    } else {
+      d[i].streak = count
+      actorEvents.push(d[i])
+      count = 0;
+    }
+  }
+
+  let result = actorEvents.sort((a, b) => {
+    if (a.streak === b.streak) {
+      const a1time = calcTime(a.createdAt)
+      const b1time = calcTime(b.createdAt)
+      if (a1time === b1time) {
+        return a.login.localeCompare(b.login);
+      }
+      return b1time - a1time
+    }
+
+    return b.streak - a.streak
+  });
+  const arrInd = []
+
+  for (let i = 0; i < result.length; i++) {
+    if (result.length - 1 == i) {
+      break;
+    }
+    if (result[i].login === result[i + 1].login) {
+      arrInd.push(i)
+    }
+  }
+  for (let i = 0; i < arrInd.length; i++) {
+    result.splice(arrInd[i], 1)
+  }
+
+  return result
+}
 }

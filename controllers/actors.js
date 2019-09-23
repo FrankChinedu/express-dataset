@@ -5,7 +5,7 @@ const inDescendingOrder = util.inDescendingOrder;
 const inAlphabeticalOrder = util.inAlphabeticalOrder;
 const getNumberOfEvents = util.orderByNumberOfEvents;
 const orderByComplexity = util.orderByComplexity;
-const orderByStreak = util.orderByStreak;
+const orderByStreak = util.ByStreak;
 const removeStreakAndCreatedAtFromArr = util.removeStreakAndCreatedAtFromArr;
 const removeEventNumAndCreatedAtFromArr = util.removeEventNumAndCreatedAtFromArr;
 
